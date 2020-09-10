@@ -14,11 +14,13 @@ str(choco)
 rating <- choco$Rating
 hist(rating)
 boxplot(rating)
+title(main="Boxplot of Rating")
 ```
 
 2. It can be seen in the barplot that 2015 had the most ratings that year, while 2006 has the least. 2020 technically has the least, but I would argue that since 2020 is not yet over, that number is not definite yet.
 ```{r}
 barplot(table(choco$Date), c(2006:2020))
+title(main="Ratings per Year", xlab="Year", ylab="Count")
 ```
 
 3. From the scatterplot, there doesn't seem to much of a correlation between cocoa percentage and rating. In general, cocoa percentages that are more mid-range rather than extreme seem to have higher ratings.
@@ -27,4 +29,38 @@ percent <- choco[c("Cocoa_Percent","Rating")]
 summary(percent)
 str(percent)
 plot(percent)
+title(main="Cocoa Percentage vs Rating")
+```
+
+4. The most favorable characteristic is creamy, while the least favorable characteristics were acidic and pastey. I found these characteristics by first splitting the original dataframe into top tier and bottom tier, depending on their rating. I then plotted both of these new dataframes and found which characteristic was most frequent in both sets of data.
+```{r}
+flavor <- choco[c("Characteristics1", "Rating")]
+topF <- flavor[flavor$Rating == 4, ]
+barplot(table(topF$Characteristics1), las=2, cex.names=0.55)
+title(main="Top Characteristics", xlab="Characteristics", ylab="Count")
+bottomF <- flavor[flavor$Rating < 2, ]
+barplot(table(bottomF$Characteristics1), las=2, cex.names=0.55)
+title(main="Bottom Characteristics", xlab="Characteristics", ylab="Count")
+top_char <- sum(topF$Characteristics1 == 'creamy')
+top_char
+bottom_char1 <- sum(bottomF$Characteristics1 == 'acidic')
+bottom_char1
+bottom_char2 <- sum(bottomF$Characteristics1 == 'pastey')
+bottom_char2
+```
+
+5. The first analysis I made from this data is comparing the ratings of the chocolate to the bean origin and seeing which origin of bean gives the highest ratings. From my barplot, we can see that Venezuela has the most instances of 4.0 rating with 18 data entries. The second analysis I made was seeing which company had the most highest rated chocolate. From my analysis, we can see that the company "Soma" has the most counts of 4.0 rated chocolate with 13 data entries. For both of these analyses, I decided to just look at the top rated chocolates so I only looked at data entries that had a 4.0 rating.
+```{r}
+origin <- choco[c("Bean_Origin", "Rating")]
+topO <- origin[origin$Rating == 4,]
+barplot(table(topO$Bean_Origin), las=2, cex.names=0.55)
+title(main="Top Places of Origin", xlab="Origin", ylab="Count")
+top_origin <- sum(topO == 'Venezuela')
+top_origin
+company <- choco[c("Company", "Rating")]
+topC <- company[company$Rating == 4,]
+barplot(table(topC$Company), las=2, cex.names=0.55)
+title(main="Top Companies", xlab="Company", ylab="Count")
+top_company <- sum(topC == 'Soma')
+top_company
 ```
