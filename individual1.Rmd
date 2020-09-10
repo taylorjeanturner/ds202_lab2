@@ -1,0 +1,30 @@
+---
+title: "individual1.Rmd"
+author: "Taylor Turner"
+date: "9/8/2020"
+output: html_document
+---
+
+```{r}
+choco <- read.csv("https://raw.githubusercontent.com/xdaiISU/ds202materials/master/hwlabs/data/choco.csv") 
+str(choco)
+```
+1. As shown in the histogram and boxplot of the chocolate ratings, the ratings are fairly left skewed. Outliers in the data can be seen at ratings of 2.0, 1.75, 1.5, and 1.0.
+```{r}
+rating <- choco$Rating
+hist(rating)
+boxplot(rating)
+```
+
+2. It can be seen in the barplot that 2015 had the most ratings that year, while 2006 has the least. 2020 technically has the least, but I would argue that since 2020 is not yet over, that number is not definite yet.
+```{r}
+barplot(table(choco$Date), c(2006:2020))
+```
+
+3. From the scatterplot, there doesn't seem to much of a correlation between cocoa percentage and rating. In general, cocoa percentages that are more mid-range rather than extreme seem to have higher ratings.
+```{r}
+percent <- choco[c("Cocoa_Percent","Rating")]
+summary(percent)
+str(percent)
+plot(percent)
+```
