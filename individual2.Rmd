@@ -1,0 +1,166 @@
+---
+title: "Lab2"
+author: "Molly Carrick"
+date: "9/13/2020"
+output: html_document
+---
+
+```{r}
+
+choco<-read.csv("https://raw.githubusercontent.com/xdaiISU/ds202materials/master/hwlabs/data/choco.csv")
+boxplot(choco$Rating)
+```
+```{r}
+hist(choco$Rating)
+```
+
+
+## Rating Distributions
+
+
+From the histogram, it is clear that the distribution of ratings is skewed to the left.  Based on the boxplot, the median value appears to be around 3.25.  There are a few outliers.  Based on the boxplot, it appears that there are four outliers, all on the low end of ratings, with the lowest one being a rating of 1.0.  
+
+## Ratings Based on Year
+
+
+```{r}
+factorDate<-factor(choco$Date)
+barplot(table(factorDate))
+```
+
+
+It appears that the number of chocolate bars evaluated each year changes drastically.  The year 2015 had the most ratings and the year 2020 had the least ratings, but that is most likely due to the fact that 2020 is not over yet.  The range of data is spread over fourteen years and the shape of the barplot is slightly skewered to the left.  The number of ratings rose fairly consistently up until 2015, where the was a sudden drop in year 2017.  The number of ratings increased greatly in 2018 and then decreased again in 2019 and 2020.
+
+## Cacoa Percentage
+```{r}
+plot(choco$Cocoa_Percent, choco$Rating)
+```
+```{r}
+cocoaRate<-choco[ , c("Rating", "Cocoa_Percent")]
+summary(cocoaRate)
+```
+Based on the scatter plot, and summary statistics, there appears to be no correlation between the rating of the choocolate bar and the cocoa percentage.  Chocolate bars that had the highest percentage of cocoa got various ratings, including one of the lowest ones.  The chocolate bars with the lowest percentage of cocoa had the same results, with a spread of all types of ratings.  There is not a clear indication that cocoa percentage is related to what rating the chocolate bar will receive.
+
+
+
+## Characteristics of Chocolate Bars
+
+```{r}
+head(sort(table(choco$Characteristics1), decreasing=TRUE))
+head(sort(table(choco$Characteristics2), decreasing=TRUE))
+head(sort(table(choco$Characteristics3), decreasing=TRUE))
+head(sort(table(choco$Characteristics4), decreasing=TRUE))
+```
+
+
+```{r}
+charact<-choco[ , c("Characteristics1", "Characteristics2", "Characteristics3", "Characteristics4")]
+coco<-choco[charact=="cocoa", ]
+hist(coco$Rating)
+
+
+sweet<-choco[charact=="sweet", ]
+hist(sweet$Rating)
+
+nutty<-choco[charact=="nutty", ]
+hist(nutty$Rating)
+
+earthy<-choco[charact=="earthy", ]
+hist(earthy$Rating)
+
+roasty<-choco[charact=="roasty", ]
+hist(roasty$Rating)
+
+floral<-choco[charact=="floral", ]
+hist(floral$Rating)
+
+sandy<-choco[charact=="sandy", ]
+hist(sandy$Rating)
+
+intensity<-choco[charact=="intense", ]
+hist(intensity$Rating)
+
+rich<-choco[charact=="rich", ]
+hist(rich$Rating)
+
+mean(coco$Rating, na.rm=TRUE)
+mean(sweet$Rating, na.rm=TRUE)
+mean(nutty$Rating, na.rm=TRUE)
+mean(earthy$Rating, na.rm=TRUE)
+mean(roasty$Rating, na.rm=TRUE)
+mean(floral$Rating, na.rm=TRUE)
+mean(sandy$Rating, na.rm=TRUE)
+mean(intensity$Rating, na.rm=TRUE)
+mean(rich$Rating, na.rm=TRUE)
+```
+
+I wanted to see which characteristics are more favorable in chocolate, so I decided to look at the most common characteristics.  Those included cocoa", "sweet", "nutty", "earthy", "roasty", "floral", "creamy", "sandy", "intense", "sour", and "rich".  Cocoa, floral, intense, and rich all had histograms skewed to the left.  This suggests they are more favorable.  Roasty, sandy, earthy, nutty, and sweet did not have much of a skew at all.  This suggests that they can be favorable or disliked characteristics.  I also found the means of the ratings for each characteristic. The highest mean was rich, so this may be the most favorable characteristic.  The lowest mean was sweet, so this may be the least favorable characteristic.  The spread of the means was not very large, so these characteristics do not have the greatest correlation with rating.
+
+
+## Bean Origin (Analysis 1)
+```{r}Coco
+head(sort(table(choco$Bean_Origin), decreasing=TRUE))
+```
+
+```{r}
+venezuela<-choco[choco$Bean_Origin=="Venezuela", ]
+hist(venezuela$Rating)
+```
+```{r}
+peru<-choco[choco$Bean_Origin=="Peru", ]
+hist(peru$Rating)
+```
+```{r}
+ecuador<-choco[choco$Bean_Origin=="Ecuador", ]
+hist(ecuador$Rating)
+```
+```{r}
+dr<-choco[choco$Bean_Origin=="Dominican Republic", ]
+hist(dr$Rating)
+```
+```{r}
+mad<-choco[choco$Bean_Origin=="Madagascar", ]
+hist(mad$Rating)
+
+```
+```{r}
+mean(venezuela$Rating)
+mean(peru$Rating)
+mean(ecuador$Rating)
+mean(dr$Rating)
+mean(mad$Rating)
+```
+
+To compare bean origin to rating, I looked at the top five most common countries that beans are from and compared them.  The top five countries are Venezuela, Peru, Ecuador, Domincan Republic, and Madigascar.  I plotted an individual histogram of each of their ratings and not much could be told from them.  They all had a similar curve, which was slightly skewed to the left.  What I found particularly interesting was that they mostly were bimodal except for Ecuador.  Since not much could be told from the histograms, I looked at the average rating for each country.  All of them were very close to each other.  I must conclude that depending where the beans are from has little to no effect on the chocolate rating.
+
+## Ingredients (Analysis 2)
+
+```{r}
+head(sort(table(choco$Ingredients), decreasing=TRUE))
+
+bsc<-choco[choco$Ingredients=="3- B,S,C", ]
+hist(bsc$Rating)
+
+bs<-choco[choco$Ingredients=="2- B,S", ]
+hist(bs$Rating)
+
+bscl<-choco[choco$Ingredients=="4- B,S,C,L", ]
+hist(bscl$Rating)
+
+bscvl<-choco[choco$Ingredients=="5- B,S,C,V,L", ]
+hist(bscvl$Rating)
+
+bscv<-choco[choco$Ingredients=="4- B,S,C,V", ]
+hist(bscv$Rating)
+
+mean(bsc$Rating, na.rm=TRUE)
+mean(bs$Rating, na.rm=TRUE)
+mean(bscl$Rating, na.rm=TRUE)
+mean(bscvl$Rating, na.rm=TRUE)
+mean(bscv$Rating, na.rm=TRUE)
+```
+
+For the second analysis, I decided to compare rating with ingredients.  This proved to be a little more helpful than bean origin.  Again, I made a histogram for the five most common ingredient combinations.  These histograms varied more with the "4- B,S,C,V" and "3- B,S,C" having little to no skew, while the other three combinations of ingredients were slighlty skewed to the left.  To dig deeper, I calculated the mean ratings for each ingredient.  These were all fairly close, with the exception of "4- B,S,C,V" having the lowest mean by a greater margin.  The combinations of ingredients does have an effect on the rating of a chocolate bar, but not as much as some would expect.
+
+
+
