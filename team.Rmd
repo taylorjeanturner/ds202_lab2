@@ -8,6 +8,23 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 ## Team Rmd
+```{r}
+choco <- read.csv("https://raw.githubusercontent.com/xdaiISU/ds202materials/master/hwlabs/data/choco.csv")
+```
+2. It can be seen in the barplot that 2015 had the most ratings that year, while 2006 has the least. 2020 technically has the least, but I would argue that since 2020 is not yet over, that number is not definite yet.
+```{r}
+barplot(table(choco$Date), c(2006:2020))
+title(main="Ratings per Year", xlab="Year", ylab="Count")
+```
+
+3. From the scatterplot, there doesn't seem to much of a correlation between cocoa percentage and rating. In general, cocoa percentages that are more mid-range rather than extreme seem to have higher ratings.
+```{r}
+percent <- choco[c("Cocoa_Percent","Rating")]
+summary(percent)
+str(percent)
+plot(percent)
+title(main="Cocoa Percentage vs Rating")
+```
 
 4.How do different characteristics of the chocolate compare? To elaborate, which characteristics tend to be more favorable and which ones are not? Create both numerical and graphical summaries, and explain. 
 
@@ -16,8 +33,6 @@ knitr::opts_chunk$set(echo = TRUE)
 Scanning the data for potentially undesirable qualities, I generated summary statistics of ratings for certain primary characteristics such as acidic,unrefined, chalky, and so on. Chalky had the lowest median value and a mininum value of 1.0, the lowest possible score.
 
 ```{r}
-choco <- read.csv("https://raw.githubusercontent.com/xdaiISU/ds202materials/master/hwlabs/data/choco.csv")
-
 choco$Characteristics1 = as.factor(choco$Characteristics1)
 head(sort(table(choco$Characteristics1), decreasing = TRUE), n = 20)
 choco.flavorSub = choco[choco$Characteristics1 %in% c('creamy', 'sandy', 'intense','nuty','fatty','sweet',
@@ -49,6 +64,16 @@ summary(choco$Rating[choco$Characteristics1 == 'unrefined'])
 
 5.Brainstorm two analyses you would like to perform with your teammate. Describe in plain language what comparisons are you making. Create suitable numerical and graphical summaries for your analyses. Describe the results.
 
+**Analysis 1:**
+The analysis I made from this data is comparing the ratings of the chocolate to the bean origin and seeing which origin of bean gives the highest ratings. From my barplot, we can see that Venezuela has the most instances of 4.0 rating with 18 data entries. When making this analysis I decided to just look at the top rated chocolates so I only looked at data entries that had a 4.0 rating.
+```{r}
+origin <- choco[c("Bean_Origin", "Rating")]
+topO <- origin[origin$Rating == 4,]
+barplot(table(topO$Bean_Origin), las=2, cex.names=0.55)
+title(main="Top Places of Origin", xlab="Origin", ylab="Count")
+top_origin <- sum(topO == 'Venezuela')
+top_origin
+```
 
 **Analysis 2: ** In this analysis, I was interested to see if a certain set of ingredients tended to produce chocolate bars with higher ratings.To begin, I searched for the ingredient profiles with the most
 entries and subsetted a vector containing only those entries, leaving out chocolate bars with very uinque ingredient profiles. I then subsetted the dataframe to contain only those ingredient profiles. From there, I created a boxplot, showing the distributions of ratings for
@@ -71,3 +96,15 @@ summary(choco.SubIngredients$Rating[choco.SubIngredients$Ingredients == '3- B,S,
 summary(choco.SubIngredients$Rating[choco.SubIngredients$Ingredients == '4- B,S,C,L'])
 summary(choco.SubIngredients$Rating[choco.SubIngredients$Ingredients == '4- B,S,C,V'])
 summary(choco.SubIngredients$Rating[choco.SubIngredients$Ingredients == '5- B,S,C,V,L'])
+```
+
+**Analysis 3:**
+An analysis I made was seeing which company had the most highest rated chocolate. From my analysis, we can see that the company "Soma" has the most counts of 4.0 rated chocolate with 13 data entries. For both of these analyses, I decided to just look at the top rated chocolates so I only looked at data entries that had a 4.0 rating.
+```{r}
+company <- choco[c("Company", "Rating")]
+topC <- company[company$Rating == 4,]
+barplot(table(topC$Company), las=2, cex.names=0.55)
+title(main="Top Companies", xlab="Company", ylab="Count")
+top_company <- sum(topC == 'Soma')
+top_company
+```
