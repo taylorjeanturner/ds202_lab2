@@ -105,7 +105,7 @@ choco.BeanLoc$Test2 = ordered(choco.BeanLoc$Test, levels = c('Venezuela','Domini
 
 ```{r}
 par(mar=c(10, 4.2, 4.2, 2.4))
-barplot(table(choco.BeanLoc$Test2),xlab = '', ylim = c(0,250), ylab ='Number of Bars 3.0 or Better', main = 'Bean Origin of the Best Bar', las = 2)
+barplot(table(choco.BeanLoc$Test2),xlab = '', ylim = c(0,250), ylab ='Number of Bars 3.0 or Better', main = 'Bean Origin of the Best Bars', las = 2)
 mtext(text = 'Country of Origin',side=1, line= 7.0)
 
 ```
