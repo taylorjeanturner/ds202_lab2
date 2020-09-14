@@ -11,6 +11,14 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 choco <- read.csv("https://raw.githubusercontent.com/xdaiISU/ds202materials/master/hwlabs/data/choco.csv")
 ```
+1. From the histogram, it is clear that the distribution of ratings is skewed to the left-meaning that the mojority of ratings are on the higher end of the spectrum.  Based on the boxplot, the median value appears to be around 3.25.  There are a few outliers.  It appears that there are four outliers, all on the low end of ratings, with the lowest one being a rating of 1.0.
+```{r}
+boxplot(choco$Rating, main="Distribution of Ratings", ylab="Rating")
+```
+```{r}
+hist(choco$Rating, main="Distribution of Ratings", xlab="Chocolate Rating")
+```
+
 2. It can be seen in the barplot that 2015 had the most ratings that year, while 2006 has the least. 2020 technically has the least, but I would argue that since 2020 is not yet over, that number is not definite yet.
 ```{r}
 chocoYears <- factor(choco$Date, levels = c(2006:2020))
@@ -84,7 +92,7 @@ top_origin
 
 **Analysis 2: ** In this analysis, I was interested to see if a certain set of ingredients tended to produce chocolate bars with higher ratings.To begin, I searched for the ingredient profiles with the most
 entries and subsetted a vector containing only those entries, leaving out chocolate bars with very uinque ingredient profiles. I then subsetted the dataframe to contain only those ingredient profiles. From there, I created a boxplot, showing the distributions of ratings for
-each ingredient profile. From the plot, Ingredient profiles 2-B,S, 3-B,S,C,and B,S,C,L tended to perform slighly better. The introduction of V,into the ingredient profile did seem to decrease the performance overall. Additionally, Ingredient profile 5- B,S,C,V,L had the highest IQR of any ingredient profile,illustrated in the summary statistics. 
+each ingredient profile. From the plot, Ingredient profiles 2-B,S, 3-B,S,C,and B,S,C,L tended to perform slighly better. The introduction of V,into the ingredient profile did seem to decrease the performance overall. Additionally, Ingredient profile 5- B,S,C,V,L had the highest IQR of any ingredient profile,illustrated in the summary statistics. I also included a histogram of ingredients 5- B,S,C,V,L to show its rating distributions because of its high IQR value.
 
 ```{r, results = 'hide'}
 choco <- read.csv("https://raw.githubusercontent.com/xdaiISU/ds202materials/master/hwlabs/data/choco.csv")
@@ -105,8 +113,13 @@ summary(choco.SubIngredients$Rating[choco.SubIngredients$Ingredients == '4- B,S,
 summary(choco.SubIngredients$Rating[choco.SubIngredients$Ingredients == '5- B,S,C,V,L'])
 ```
 
+```{r}
+bscvl<-choco[choco$Ingredients=="5- B,S,C,V,L", ]
+hist(bscvl$Rating, main="5- B,S,C,V,L Rating Distribution", xlab="Rating")
+```
+
 **Analysis 3:**
-An analysis I made was seeing which company had the most highest rated chocolate. From my analysis, we can see that the company "Soma" has the most counts of 4.0 rated chocolate with 13 data entries. For both of these analyses, I decided to just look at the top rated chocolates so I only looked at data entries that had a 4.0 rating.
+An analysis I made was seeing which company had the most highest rated chocolate. From my analysis, we can see that the company "Soma" has the most counts of 4.0 rated chocolate with 13 data entries. For both of these analyses, I decided to just look at the top rated chocolates so I only looked at data entries that had a 4.0 rating.  This analysis suggests that the company may have an effect on the rating of chocolate, since the chocolates rated 4.0 were not distributed evenly between companies.
 ```{r}
 company <- choco[c("Company", "Rating")]
 topC <- company[company$Rating == 4,]
