@@ -13,8 +13,8 @@ choco <- read.csv("https://raw.githubusercontent.com/xdaiISU/ds202materials/mast
 ```
 2. It can be seen in the barplot that 2015 had the most ratings that year, while 2006 has the least. 2020 technically has the least, but I would argue that since 2020 is not yet over, that number is not definite yet.
 ```{r}
-barplot(table(choco$Date), c(2006:2020))
-title(main="Ratings per Year", xlab="Year", ylab="Count")
+chocoYears <- factor(choco$Date, levels = c(2006:2020))
+barplot(table(chocoYears), xlab = 'Year', ylab = 'Number of Ratings', main = 'Number of Ratings by Year', ylim = c(0,300), las = 2)
 ```
 
 3. From the scatterplot, there doesn't seem to much of a correlation between cocoa percentage and rating. In general, cocoa percentages that are more mid-range rather than extreme seem to have higher ratings.
@@ -69,8 +69,15 @@ The analysis I made from this data is comparing the ratings of the chocolate to 
 ```{r}
 origin <- choco[c("Bean_Origin", "Rating")]
 topO <- origin[origin$Rating == 4,]
+```
+
+```{r}
+par(mar=c(7, 4.2, 4.2, 2.4))
 barplot(table(topO$Bean_Origin), las=2, cex.names=0.55)
-title(main="Top Places of Origin", xlab="Origin", ylab="Count")
+title(main="Top Places of Origin", xlab="", ylab="Count")
+mtext(text = 'Country of Origin',side=1, line= 5.5)
+```
+```{r}
 top_origin <- sum(topO == 'Venezuela')
 top_origin
 ```
@@ -103,8 +110,14 @@ An analysis I made was seeing which company had the most highest rated chocolate
 ```{r}
 company <- choco[c("Company", "Rating")]
 topC <- company[company$Rating == 4,]
-barplot(table(topC$Company), las=2, cex.names=0.55)
-title(main="Top Companies", xlab="Company", ylab="Count")
+```
+```{r}
+par(mar=c(12, 4.2, 4.2, 2.4))
+barplot(table(topC$Company), las=2, cex.names=0.55, main ='Top Companies', xlab ='', ylab = 'Count')
+mtext(text = 'Companies',side=1, line= 10.0)
+
+```
+```{r}
 top_company <- sum(topC == 'Soma')
 top_company
 ```
