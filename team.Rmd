@@ -1,6 +1,6 @@
 ---
 title: "team.Rmd"
-author: "Taylor Turner"
+author: "Taylor Turner, Ryan Lode, Molly Carrick"
 date: "9/10/2020"
 output: html_document
 ---
