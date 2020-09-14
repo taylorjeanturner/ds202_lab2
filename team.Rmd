@@ -8,3 +8,40 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 ## Team Rmd
+
+4.How do different characteristics of the chocolate compare? To elaborate, which characteristics tend to be more favorable and which ones are not? Create both numerical and graphical summaries, and explain. 
+
+**Analysis** In this analysis, I first sorted the characteristics in decreasing order, starting with the characteristic with the most entries and so on. I then created a chart with a series of boxplots showing the distribution of the ratings of chocolate bars versus their ratings. Each boxplot is arranged by decreasing median value. Based on the boxplots, Creamy and rich cocoa were the primary characteristics associated with a higher rating. However, creamy had more entries than 'rich cocoa'. Interestingly, chocolate bars with the primary characterstic of being sweet had the lowest median value of those shown in the plot. 
+
+Scanning the data for potentially undesirable qualities, I generated summary statistics of ratings for certain primary characteristics such as acidic,unrefined, chalky, and so on. Chalky had the lowest median value and a mininum value of 1.0, the lowest possible score.
+
+```{r}
+choco <- read.csv("https://raw.githubusercontent.com/xdaiISU/ds202materials/master/hwlabs/data/choco.csv")
+
+choco$Characteristics1 = as.factor(choco$Characteristics1)
+head(sort(table(choco$Characteristics1), decreasing = TRUE), n = 20)
+choco.flavorSub = choco[choco$Characteristics1 %in% c('creamy', 'sandy', 'intense','nuty','fatty','sweet',
+                                                      'spicy', 'oily' ,'roasty', 'rich cocoa'),]
+
+choco.flavorSub$Test = as.character(choco.flavorSub$Characteristics1)
+choco.flavorSub$Test = as.factor(choco.flavorSub$Test)
+
+```
+```{r, results = 'hide'}
+reorder(choco.flavorSub$Test, choco.flavorSub$Rating, FUN = median, na.rm = TRUE)
+```
+```{r}
+choco.flavorSub$Test2 = ordered(choco.flavorSub$Test, levels = c('creamy','rich cocoa','spicy','intense',
+                                                                 'oily','fatty','roasty','sandy','sweet'))
+```
+```{r}
+par(mar=c(10, 4.2, 4.2, 2.4))
+boxplot(choco.flavorSub$Rating ~ choco.flavorSub$Test2, xlab = '', ylab = 'Rating', main = 'Primary Characteristic vs Rating', las = 2)
+mtext(text = 'Primary Flavor',side=1, line= 7.0)
+
+```
+
+```{r}
+summary(choco$Rating[choco$Characteristics1 == 'acidic'])
+summary(choco$Rating[choco$Characteristics1 == 'chalky'])
+summary(choco$Rating[choco$Characteristics1 == 'unrefined'])
